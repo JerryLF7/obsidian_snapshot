@@ -913,7 +913,9 @@ var ExportPlus = class extends import_obsidian.Plugin {
         }
       }
     }
-    const content = await this.app.vault.read(file);
+    let content = await this.app.vault.read(file);
+    const frontmatterRegex = /^---\r?\n[\s\S]*?\r?\n---\r?\n?/;
+    content = content.replace(frontmatterRegex, "");
     const bodyContainer = container.createDiv({ cls: "markdown-preview-view" });
     const component = new import_obsidian.Component();
     component.load();
@@ -951,13 +953,10 @@ var ExportPlus = class extends import_obsidian.Plugin {
     iframe.style.position = "fixed";
     iframe.style.width = "210mm";
     iframe.style.height = "297mm";
-    iframe.style.top = "50%";
-    iframe.style.left = "50%";
-    iframe.style.transform = "translate(-50%, -50%)";
-    iframe.style.border = "1px solid #ccc";
-    iframe.style.zIndex = "10000";
-    iframe.style.backgroundColor = "white";
-    iframe.style.boxShadow = "0 0 20px rgba(0,0,0,0.3)";
+    iframe.style.top = "-10000px";
+    iframe.style.left = "-10000px";
+    iframe.style.border = "none";
+    iframe.style.visibility = "hidden";
     document.body.appendChild(iframe);
     const win = (_a = iframe.contentWindow) != null ? _a : null;
     const doc = (_c = (_b = iframe.contentDocument) != null ? _b : win == null ? void 0 : win.document) != null ? _c : null;

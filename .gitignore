@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+*.js
+!esbuild.config.mjs
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local configuration and development notes
+CLAUDE.md
+.claude/
+
+# Environment variables
+.env
+.env.local
+
+# Temporary files
+*.tmp
+*.log

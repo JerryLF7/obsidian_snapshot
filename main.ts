@@ -133,9 +133,15 @@ export default class ExportPlus extends Plugin {
 		}
 
 		// 3. Body
-		const content = await this.app.vault.read(file);
+		let content = await this.app.vault.read(file);
+
+		// Remove frontmatter from content to avoid duplicate rendering
+		// Frontmatter is enclosed between --- at the start of the file
+		const frontmatterRegex = /^---\r?\n[\s\S]*?\r?\n---\r?\n?/;
+		content = content.replace(frontmatterRegex, '');
+
 		const bodyContainer = container.createDiv({ cls: 'markdown-preview-view' });
-		
+
 		// Use MarkdownRenderer to render the content
 		// We use a dummy component for lifecycle management
 		const component = new Component();
@@ -176,18 +182,15 @@ export default class ExportPlus extends Plugin {
 		console.log('PDF Export - Original element HTML length:', el.innerHTML.length);
 		console.log('PDF Export - Original element children:', el.children.length);
 
-		// Create a larger, visible iframe for proper rendering
+		// Create an offscreen iframe for printing (invisible to user)
 		const iframe = document.createElement('iframe');
 		iframe.style.position = 'fixed';
 		iframe.style.width = '210mm';  // A4 width
 		iframe.style.height = '297mm'; // A4 height
-		iframe.style.top = '50%';
-		iframe.style.left = '50%';
-		iframe.style.transform = 'translate(-50%, -50%)';
-		iframe.style.border = '1px solid #ccc';
-		iframe.style.zIndex = '10000';
-		iframe.style.backgroundColor = 'white';
-		iframe.style.boxShadow = '0 0 20px rgba(0,0,0,0.3)';
+		iframe.style.top = '-10000px';
+		iframe.style.left = '-10000px';
+		iframe.style.border = 'none';
+		iframe.style.visibility = 'hidden';
 
 		document.body.appendChild(iframe);
 
