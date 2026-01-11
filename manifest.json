@@ -1,0 +1,10 @@
+{
+	"id": "obsidian-snapshot",
+	"name": "Obsidian Snapshot",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "Export notes with properties and title to PDF/Image with original preview style.",
+	"author": "Assistant",
+	"authorUrl": "https://obsidian.md",
+	"isDesktopOnly": true
+}

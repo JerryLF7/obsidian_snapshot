@@ -1,0 +1,24 @@
+{
+  "name": "obsidian-snapshot",
+  "version": "1.0.0",
+  "description": "Export Obsidian notes with properties, title, and body to PDF or Image.",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node esbuild.config.mjs production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.11.21",
+    "builtin-modules": "^5.0.0",
+    "esbuild": "0.14.14",
+    "obsidian": "latest",
+    "tslib": "2.3.1",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "html-to-image": "^1.11.11"
+  }
+}

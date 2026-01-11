@@ -1,0 +1,58 @@
+/* Container styling */
+.obsidian-export-plus-container {
+    font-family: var(--font-interface);
+    line-height: var(--line-height-normal);
+}
+
+.export-title {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--background-modifier-border);
+    padding-bottom: 10px;
+}
+
+/* Metadata / Properties styling to mimic Obsidian UI */
+.metadata-container {
+    margin-bottom: 30px;
+    padding: 10px;
+    background-color: var(--background-secondary-alt);
+    border-radius: 4px;
+    border: 1px solid var(--background-modifier-border);
+}
+
+.metadata-properties-heading {
+    font-weight: bold;
+    font-size: 0.8em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+}
+
+.metadata-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.metadata-property {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.metadata-property-key {
+    width: 150px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.metadata-property-value {
+    flex: 1;
+    color: var(--text-normal);
+}
+
+/* Ensure markdown preview looks good */
+.obsidian-export-plus-container .markdown-preview-view {
+    padding: 0;
+    background-color: transparent;
+}
