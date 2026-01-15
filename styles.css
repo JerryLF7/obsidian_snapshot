@@ -11,7 +11,7 @@
 }
 
 /* Metadata / Properties styling to mimic Obsidian UI */
-.metadata-container {
+.oep-metadata-container {
     margin-bottom: 30px;
     padding: 10px;
     background-color: var(--background-secondary-alt);
@@ -19,7 +19,7 @@
     border: 1px solid var(--background-modifier-border);
 }
 
-.metadata-properties-heading {
+.oep-metadata-properties-heading {
     font-weight: bold;
     font-size: 0.8em;
     color: var(--text-muted);
@@ -28,25 +28,25 @@
     letter-spacing: 0.05em;
 }
 
-.metadata-content {
+.oep-metadata-content {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.metadata-property {
+.oep-metadata-property {
     display: flex;
     align-items: center;
     font-size: 0.9em;
 }
 
-.metadata-property-key {
+.oep-metadata-property-key {
     width: 150px;
     color: var(--text-muted);
     font-weight: 500;
 }
 
-.metadata-property-value {
+.oep-metadata-property-value {
     flex: 1;
     color: var(--text-normal);
 }
