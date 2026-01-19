@@ -164,15 +164,46 @@ export default class ExportPlus extends Plugin {
 	}
 
 	async exportAsImage(el: HTMLElement, filename: string) {
-		const dataUrl = await toPng(el, {
-			quality: this.settings.imageQuality,
-			backgroundColor: 'var(--background-primary)',
-		});
-		
-		const link = document.createElement('a');
-		link.download = `${filename}.png`;
-		link.href = dataUrl;
-		link.click();
+		// Convert images to data URLs first (same as PDF export)
+		await this.convertImagesToDataUrls(el);
+
+		// Get the actual background color value (html-to-image can't resolve CSS variables)
+		const computedBg = getComputedStyle(document.documentElement).getPropertyValue('--background-primary').trim();
+		const backgroundColor = computedBg || '#ffffff';
+
+		// Temporarily make the container visible for rendering
+		const originalPosition = el.style.position;
+		const originalLeft = el.style.left;
+		const originalVisibility = el.style.visibility;
+
+		// Move element to be renderable but still off-screen
+		el.style.position = 'absolute';
+		el.style.left = '-10000px';
+		el.style.visibility = 'visible';
+
+		try {
+			const dataUrl = await toPng(el, {
+				quality: this.settings.imageQuality,
+				backgroundColor: backgroundColor,
+				pixelRatio: 2, // Higher quality
+				style: {
+					// Override inline styles that might cause issues
+					position: 'static',
+					left: '0',
+					visibility: 'visible',
+				}
+			});
+
+			const link = document.createElement('a');
+			link.download = `${filename}.png`;
+			link.href = dataUrl;
+			link.click();
+		} finally {
+			// Restore original styles
+			el.style.position = originalPosition;
+			el.style.left = originalLeft;
+			el.style.visibility = originalVisibility;
+		}
 	}
 
 	async exportAsPDF(el: HTMLElement) {

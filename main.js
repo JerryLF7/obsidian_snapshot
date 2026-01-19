@@ -901,15 +901,15 @@ var ExportPlus = class extends import_obsidian.Plugin {
     if (this.settings.includeProperties) {
       const cache2 = this.app.metadataCache.getFileCache(file);
       if (cache2 == null ? void 0 : cache2.frontmatter) {
-        const propsContainer = container.createDiv({ cls: "metadata-container" });
-        propsContainer.createEl("div", { text: "Properties", cls: "metadata-properties-heading" });
-        const propsTable = propsContainer.createDiv({ cls: "metadata-content" });
+        const propsContainer = container.createDiv({ cls: "oep-metadata-container" });
+        propsContainer.createEl("div", { text: "Properties", cls: "oep-metadata-properties-heading" });
+        const propsTable = propsContainer.createDiv({ cls: "oep-metadata-content" });
         for (const [key, value] of Object.entries(cache2.frontmatter)) {
           if (key === "position")
             continue;
-          const row = propsTable.createDiv({ cls: "metadata-property" });
-          row.createDiv({ text: key, cls: "metadata-property-key" });
-          row.createDiv({ text: String(value), cls: "metadata-property-value" });
+          const row = propsTable.createDiv({ cls: "oep-metadata-property" });
+          row.createDiv({ text: key, cls: "oep-metadata-property-key" });
+          row.createDiv({ text: String(value), cls: "oep-metadata-property-value" });
         }
       }
     }
@@ -935,14 +935,35 @@ var ExportPlus = class extends import_obsidian.Plugin {
     await Promise.all(promises);
   }
   async exportAsImage(el, filename) {
-    const dataUrl = await toPng(el, {
-      quality: this.settings.imageQuality,
-      backgroundColor: "var(--background-primary)"
-    });
-    const link = document.createElement("a");
-    link.download = `${filename}.png`;
-    link.href = dataUrl;
-    link.click();
+    await this.convertImagesToDataUrls(el);
+    const computedBg = getComputedStyle(document.documentElement).getPropertyValue("--background-primary").trim();
+    const backgroundColor = computedBg || "#ffffff";
+    const originalPosition = el.style.position;
+    const originalLeft = el.style.left;
+    const originalVisibility = el.style.visibility;
+    el.style.position = "absolute";
+    el.style.left = "-10000px";
+    el.style.visibility = "visible";
+    try {
+      const dataUrl = await toPng(el, {
+        quality: this.settings.imageQuality,
+        backgroundColor,
+        pixelRatio: 2,
+        style: {
+          position: "static",
+          left: "0",
+          visibility: "visible"
+        }
+      });
+      const link = document.createElement("a");
+      link.download = `${filename}.png`;
+      link.href = dataUrl;
+      link.click();
+    } finally {
+      el.style.position = originalPosition;
+      el.style.left = originalLeft;
+      el.style.visibility = originalVisibility;
+    }
   }
   async exportAsPDF(el) {
     var _a, _b, _c;
@@ -1058,7 +1079,7 @@ var ExportPlus = class extends import_obsidian.Plugin {
 			}
 
 			/* Properties/Metadata styles */
-			.metadata-container {
+			.oep-metadata-container {
 				display: block !important;
 				margin-bottom: 30px !important;
 				padding: 15px !important;
@@ -1068,7 +1089,7 @@ var ExportPlus = class extends import_obsidian.Plugin {
 				visibility: visible !important;
 			}
 
-			.metadata-properties-heading {
+			.oep-metadata-properties-heading {
 				display: block !important;
 				font-weight: bold !important;
 				font-size: 0.8em !important;
@@ -1079,21 +1100,21 @@ var ExportPlus = class extends import_obsidian.Plugin {
 				visibility: visible !important;
 			}
 
-			.metadata-content {
+			.oep-metadata-content {
 				display: flex !important;
 				flex-direction: column !important;
 				gap: 8px !important;
 				visibility: visible !important;
 			}
 
-			.metadata-property {
+			.oep-metadata-property {
 				display: flex !important;
 				align-items: center !important;
 				font-size: 0.9em !important;
 				visibility: visible !important;
 			}
 
-			.metadata-property-key {
+			.oep-metadata-property-key {
 				display: inline-block !important;
 				width: 150px !important;
 				color: #666 !important;
@@ -1101,7 +1122,7 @@ var ExportPlus = class extends import_obsidian.Plugin {
 				visibility: visible !important;
 			}
 
-			.metadata-property-value {
+			.oep-metadata-property-value {
 				display: inline-block !important;
 				flex: 1 !important;
 				color: black !important;
