@@ -127,7 +127,26 @@ export default class ExportPlus extends Plugin {
 					if (key === 'position') continue;
 					const row = propsTable.createDiv({ cls: 'oep-metadata-property' });
 					row.createDiv({ text: key, cls: 'oep-metadata-property-key' });
-					row.createDiv({ text: String(value), cls: 'oep-metadata-property-value' });
+
+					// 处理值显示
+					const valueEl = row.createDiv({ cls: 'oep-metadata-property-value' });
+
+					// 处理布尔值 (显示 ✓ 或 ✗)
+					if (value === true || value === 'true') {
+						valueEl.setAttribute('data-value', 'true');
+						valueEl.textContent = '✓';
+					} else if (value === false || value === 'false') {
+						valueEl.setAttribute('data-value', 'false');
+						valueEl.textContent = '✗';
+					} else if (Array.isArray(value)) {
+						// 数组值
+						const ul = valueEl.createEl('ul');
+						value.forEach((item: any) => {
+							ul.createEl('li', { text: String(item) });
+						});
+					} else {
+						valueEl.textContent = String(value);
+					}
 				}
 			}
 		}

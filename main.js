@@ -909,7 +909,21 @@ var ExportPlus = class extends import_obsidian.Plugin {
             continue;
           const row = propsTable.createDiv({ cls: "oep-metadata-property" });
           row.createDiv({ text: key, cls: "oep-metadata-property-key" });
-          row.createDiv({ text: String(value), cls: "oep-metadata-property-value" });
+          const valueEl = row.createDiv({ cls: "oep-metadata-property-value" });
+          if (value === true || value === "true") {
+            valueEl.setAttribute("data-value", "true");
+            valueEl.textContent = "\u2713";
+          } else if (value === false || value === "false") {
+            valueEl.setAttribute("data-value", "false");
+            valueEl.textContent = "\u2717";
+          } else if (Array.isArray(value)) {
+            const ul = valueEl.createEl("ul");
+            value.forEach((item) => {
+              ul.createEl("li", { text: String(item) });
+            });
+          } else {
+            valueEl.textContent = String(value);
+          }
         }
       }
     }
