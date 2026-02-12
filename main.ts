@@ -95,9 +95,9 @@ export default class ExportPlus extends Plugin {
 		container.addClass('markdown-rendered');
 		container.addClass('node-insert-event');
 		
-		// Apply some basic styling for the container
-		container.style.backgroundColor = 'var(--background-primary)';
-		container.style.color = 'var(--text-normal)';
+		// Force light theme for export (解决深色主题导出背景不协调问题)
+		container.style.backgroundColor = '#ffffff';
+		container.style.color = '#1a1a1a';
 		
 		container.style.position = 'absolute';
 		container.style.left = '-100000px';
@@ -167,9 +167,8 @@ export default class ExportPlus extends Plugin {
 		// Convert images to data URLs first (same as PDF export)
 		await this.convertImagesToDataUrls(el);
 
-		// Get the actual background color value (html-to-image can't resolve CSS variables)
-		const computedBg = getComputedStyle(document.documentElement).getPropertyValue('--background-primary').trim();
-		const backgroundColor = computedBg || '#ffffff';
+		// Force light theme background for export
+		const backgroundColor = '#ffffff';
 
 		// Temporarily make the container visible for rendering
 		const originalPosition = el.style.position;
@@ -187,10 +186,12 @@ export default class ExportPlus extends Plugin {
 				backgroundColor: backgroundColor,
 				pixelRatio: 2, // Higher quality
 				style: {
-					// Override inline styles that might cause issues
+					// Override inline styles to force light theme
 					position: 'static',
 					left: '0',
 					visibility: 'visible',
+					backgroundColor: '#ffffff',
+					color: '#1a1a1a',
 				}
 			});
 

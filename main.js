@@ -883,8 +883,8 @@ var ExportPlus = class extends import_obsidian.Plugin {
     container.addClass("obsidian-export-plus-container");
     container.addClass("markdown-rendered");
     container.addClass("node-insert-event");
-    container.style.backgroundColor = "var(--background-primary)";
-    container.style.color = "var(--text-normal)";
+    container.style.backgroundColor = "#ffffff";
+    container.style.color = "#1a1a1a";
     container.style.position = "absolute";
     container.style.left = "-100000px";
     container.style.top = "0";
@@ -936,8 +936,7 @@ var ExportPlus = class extends import_obsidian.Plugin {
   }
   async exportAsImage(el, filename) {
     await this.convertImagesToDataUrls(el);
-    const computedBg = getComputedStyle(document.documentElement).getPropertyValue("--background-primary").trim();
-    const backgroundColor = computedBg || "#ffffff";
+    const backgroundColor = "#ffffff";
     const originalPosition = el.style.position;
     const originalLeft = el.style.left;
     const originalVisibility = el.style.visibility;
@@ -952,7 +951,9 @@ var ExportPlus = class extends import_obsidian.Plugin {
         style: {
           position: "static",
           left: "0",
-          visibility: "visible"
+          visibility: "visible",
+          backgroundColor: "#ffffff",
+          color: "#1a1a1a"
         }
       });
       const link = document.createElement("a");
